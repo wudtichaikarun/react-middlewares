@@ -7,10 +7,10 @@ import { Form } from 'Components'
 
 class EditArticle extends PureComponent {
   render() {
-    const { article, editArticle } = this.props
+    const { article, editArticle }=this.props
 
     return(
-      <Form value= {article.value} onSubmit={editArticle} />
+      <Form value={article.value} onSubmit={editArticle} />
     )
   }
 }

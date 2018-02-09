@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
-import { compose, withReducer } from 'recompose'
+import { compose } from 'recompose'
 import { Form } from 'Components'
 import { createArticle } from 'Actions'
 
