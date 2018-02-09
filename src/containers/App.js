@@ -7,7 +7,7 @@ import {
   CreateArticle,
   EditArticle,
   ShowArticle,
-  Atricles
+  Articles
 } from 'Containers'
 
 const store = createStore(rootReducer)
@@ -18,7 +18,7 @@ export default () => (
     <Route path='/articles/new' component={CreateArticle} />
     <Route path='/articles/:id/edit' component={EditArticle} />
     <Route path='/articles/:id' component={ShowArticle} />
-    <Route path='/articles' component={Atricles} />
+    <Route path='/articles' component={Articles} />
   </Switch>
  </Provider>
 )
