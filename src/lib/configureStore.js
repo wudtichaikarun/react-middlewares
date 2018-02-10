@@ -9,7 +9,14 @@ export default function(initialState) {
     logger,
     storage
   ]
-  return createStore(
+
+  if (module.hot) {
+    module.hot.accept('../reducers', () =>
+      store.replaceReducer(rootReducer)
+    )
+  }
+
+  const store = createStore(
     rootReducer, 
     initialState, 
     compose(
@@ -17,4 +24,6 @@ export default function(initialState) {
       DevTools.instrument()
     )
   )
+
+  return store
 }
