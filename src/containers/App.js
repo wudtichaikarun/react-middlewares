@@ -13,19 +13,32 @@ import { saveState, loadState } from 'Lib'
 
 const store = createStore(rootReducer, loadState())
 
-// log massage
-let next = store.dispatch
-store.dispatch = action => {
-  console.log('prevState', store.getState())
-  console.log('action', action)
-  const result = next(action)
-  console.log('nextState', store.getState())
-  return result
+// Logger
+const logger = store => {
+  let next = store.dispatch
+
+  store.dispatch = action => {
+    console.log('prevState', store.getState())
+    console.log('action', action)
+    const result = next(action)
+    console.log('nextState', store.getState())
+    return result
+  }
 }
 
-store.subscribe(() => {
-  saveState(store.getState())
-})
+// Save state to LocalStorage
+const storage = store => {
+  let next = store.dispatch
+
+  store.dispatch = action => {
+    const result = next(action)
+    saveState(store.getState())
+    return result
+  }
+}
+
+logger(store)
+storage(store)
 
 export default () => (
  <Provider store={store}>
