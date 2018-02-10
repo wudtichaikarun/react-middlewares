@@ -1,5 +1,6 @@
 import { createStore, applyMiddleware } from 'redux'
-import { logger, storage } from 'Middlewares'
+import logger from 'redux-logger'
+import { storage } from 'Middlewares'
 import rootReducer from '../reducers'
 
 export default function(initialState) {
