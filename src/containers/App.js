@@ -13,6 +13,16 @@ import { saveState, loadState } from 'Lib'
 
 const store = createStore(rootReducer, loadState())
 
+// log massage
+let next = store.dispatch
+store.dispatch = action => {
+  console.log('prevState', store.getState())
+  console.log('action', action)
+  const result = next(action)
+  console.log('nextState', store.getState())
+  return result
+}
+
 store.subscribe(() => {
   saveState(store.getState())
 })
