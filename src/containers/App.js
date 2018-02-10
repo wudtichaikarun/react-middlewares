@@ -9,8 +9,13 @@ import {
   ShowArticle,
   Articles
 } from 'Containers'
+import { saveState, loadState } from 'Lib'
 
-const store = createStore(rootReducer)
+const store = createStore(rootReducer, loadState())
+
+store.subscribe(() => {
+  saveState(store.getState())
+})
 
 export default () => (
  <Provider store={store}>
