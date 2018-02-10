@@ -13,35 +13,31 @@ import { saveState, loadState } from 'Lib'
 
 const store = createStore(rootReducer, loadState())
 
-// Logger
-const logger = store => {
-  let next = store.dispatch
-
-  store.dispatch = action => {
-    console.log('prevState', store.getState())
-    console.log('action', action)
-    const result = next(action)
-    console.log('nextState', store.getState())
-    return result
-  }
+// Logger (Middleware)
+const logger = store => dispatch => action => {
+  console.log('--prevState', store.getState())
+  console.log('action', action)
+  const result = dispatch(action)
+  console.log('nextState', store.getState())
+  return result
 }
 
-// Save state to LocalStorage
-const storage = store => {
-  let next = store.dispatch
-
-  store.dispatch = action => {
-    const result = next(action)
-    saveState(store.getState())
-    return result
-  }
+// Save state to LocalStorage (Middleware)
+const storage = store => dispatch => action => {
+  const result = dispatch(action)
+  saveState(store.getState())
+  return result
 }
 
-logger(store)
-storage(store)
+let next = store.dispatch
+
+next = logger(store)(next)
+next = storage(store)(next)
+
+const enhancedStore = { ...store, dispatch: next }
 
 export default () => (
- <Provider store={store}>
+ <Provider store={enhancedStore}>
   <Switch>
     <Route path='/articles/new' component={CreateArticle} />
     <Route path='/articles/:id/edit' component={EditArticle} />
