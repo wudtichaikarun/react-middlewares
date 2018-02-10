@@ -9,32 +9,30 @@ import {
   ShowArticle,
   Articles
 } from 'Containers'
-import { saveState, loadState } from 'Lib'
+import { loadState } from 'Lib'
+import { logger, storage } from 'Middlewares'
 
 const store = createStore(rootReducer, loadState())
 
-// Logger (Middleware)
-const logger = store => dispatch => action => {
-  console.log('--prevState', store.getState())
-  console.log('action', action)
-  const result = dispatch(action)
-  console.log('nextState', store.getState())
-  return result
+// CALL MIDDLEWARE OLD VERSION
+// let next = store.dispatch
+// next = logger(store)(next)
+// next = storage(store)(next)
+// const enhancedStore = { ...store, dispatch: next }
+
+// CALL MIDDLEWARE NEW VERSION
+function applayMiddleware(storage, middleware) {
+  middleware = middleware.slice()
+  middleware.reverse()
+
+  let dispatch = store.dispatch
+
+  middleware.forEach(middleware => {dispatch = middleware(storage)(dispatch)})
+
+  return { ...store, dispatch }
 }
 
-// Save state to LocalStorage (Middleware)
-const storage = store => dispatch => action => {
-  const result = dispatch(action)
-  saveState(store.getState())
-  return result
-}
-
-let next = store.dispatch
-
-next = logger(store)(next)
-next = storage(store)(next)
-
-const enhancedStore = { ...store, dispatch: next }
+const enhancedStore = applayMiddleware(store, [logger, storage])
 
 export default () => (
  <Provider store={enhancedStore}>
