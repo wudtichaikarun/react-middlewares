@@ -10,12 +10,6 @@ export default function(initialState) {
     storage
   ]
 
-  if (module.hot) {
-    module.hot.accept('../reducers', () =>
-      store.replaceReducer(rootReducer)
-    )
-  }
-
   const store = createStore(
     rootReducer, 
     initialState, 
@@ -24,6 +18,12 @@ export default function(initialState) {
       DevTools.instrument()
     )
   )
+
+  if (module.hot) {
+    module.hot.accept('../reducers', () =>
+      store.replaceReducer(rootReducer)
+    )
+  }
 
   return store
 }

@@ -16,8 +16,6 @@ class Articles extends PureComponent {
         </ul>
         <Link to='/articles/new'>New Article</Link>
       </div>
-
-
     )
   }
 }

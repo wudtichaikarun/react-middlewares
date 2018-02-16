@@ -16,7 +16,9 @@ class CreateArticle extends PureComponent {
 export default compose(
   withRouter,
   connect(
+    // map state to props
     null,
+    // map dispatch to props
     (dispatch, props) => ({
       createArticle(value) {
         dispatch(createArticle(value))
